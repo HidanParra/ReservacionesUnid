@@ -19,7 +19,7 @@
                         <table id="tablaroles" class="table table-striped table-bordered table-condensed" style="width:100%">
                         <thead class="text-center">
                             <tr>
-                                <th>No</th>
+                                <th>No</th>                                
                                 <th>Nombre</th>
                                 <th>Descripcion</th>
                                 <th>Estatus</th>
@@ -61,8 +61,8 @@
                 <div class="form-group">
                   <label for="descripcion" class="col-form-label">Estatus:</label><br>
                    <select id="lista">                   
-                      <option value="Activo">Activo</option>
-                      <option value="Inactivo">Inactivo</option>
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
                    </select>
             </div>                                                             
             </div>

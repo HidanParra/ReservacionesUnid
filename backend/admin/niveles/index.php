@@ -19,7 +19,7 @@
                         <table id="tablaniveles" class="table table-striped table-bordered table-condensed" style="width:100%">
                         <thead class="text-center">
                             <tr>
-                                <th>Id</th>
+                                <th>No</th>
                                 <th>Nombre</th>
                                 <th>Descripcion</th>
                                 <th>Estatus</th>
@@ -28,28 +28,7 @@
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
-                        <tbody class="text-center">
-                            <?php 
-                                $niveles = $db->select("Niveles","*"                      
-                                ); 
-                                foreach ($niveles as $niveles => $usr) {
-                            ?>
-                                    <tr>
-                                        <td><?php echo $usr["Id"]; ?></td>
-                                        <td><?php echo $usr["Nombre"]; ?></td>
-                                        <td><?php echo $usr["Descripcion"]; ?></td>
-                                        <td><?php echo $usr["Estatus"]; ?></td>
-                                        <td><?php echo $usr["FechaAlta"]; ?></td>     
-                                        <td>
-                                            <a href="#" class="editar_nivel" data-id="<?php echo $usr["Id"]; ?>"><i class="fas fa-edit"></i></a>
-                                        </td>
-                                        <td>
-                                            <a href="#" class="eliminar_nivel" data-id="<?php echo $usr["Id"]; ?>"><i class="fas fa-trash"></i></a>
-                                        </td>
-                                    </tr>
-                            <?php
-                                }
-                            ?>
+                        <tbody class="text-center">                           
 
                         </tbody>
                                
@@ -85,8 +64,8 @@
                 <div class="form-group">
                   <label for="descripcion" class="col-form-label">Estatus:</label><br>
                    <select id="lista">                   
-                      <option value="Activo">Activo</option>
-                      <option value="Inactivo">Inactivo</option>
+                      <option value="1">Activo</option>
+                      <option value="0">Inactivo</option>
                    </select>
             </div>                                                             
             </div>

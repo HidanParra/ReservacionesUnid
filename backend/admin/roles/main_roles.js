@@ -105,9 +105,9 @@ $(document).ready(function(){
             "id" : $(this).data("id")
         }
         $.post("../../includes/funciones_roles_niveles.php", obj, function(data){       
-            $("#nombre").val(data.Nombre);
-            $("#descripcion").val(data.Descripcion);            
-            $("#lista").val(data.Estatus);                    
+            $("#nombre").val(data.rol_Nombre);
+            $("#descripcion").val(data.rol_Descripcion);            
+            $("#lista").val(data.rol_Estatus);                    
         }, "JSON");
         
        
@@ -119,8 +119,24 @@ $(document).ready(function(){
 
         
     });
-
+    
+    $("#tablaroles").on("change",".estatus_check", function(){
+    let obj = {
+        "accion" : "cambiar_statusRol",
+        "id" :  $(this).data("id"),
+    };
+    if($(this).is(":checked")){
+        obj["status"] = 1;
+    }else{
+        obj["status"] = 0;
+    }
+    //console.log(obj);
+      
+      $.post("../../includes/funciones_roles_niveles.php",obj,"JSON");
+    });
+    
     function Mostrar(){
+        
         
         let obj={
             "accion" : "mostrar_roles"
@@ -131,23 +147,26 @@ $(document).ready(function(){
          $.post("../../includes/funciones_roles_niveles.php", obj, function(data){       
              $.each(data,function(i,e){
                  console.log(i,e);
+                 let status = "";
+                 if(e.rol_Estatus ==  1){
+                        status  =  'checked="checked"';
+                    }
                  template += `           <tr>
                                         <td>${i+1}</td>
-                                        <td>${e.Nombre}</td>
-                                        <td>${e.Descripcion}</td>
-                                        <td>${e.Estatus}</td>
-                                        <td>${e.FechaAlta}</td>     
+                                        <td>${e.rol_Nombre}</td>
+                                        <td>${e.rol_Descripcion}</td>                                    
+                                        <td><input type="checkbox" ${status} class="estatus_check" data-id="${e.rol_Id}" value="${e.rol_Estatus}"></td>
+                                        <td>${e.rol_FechaAlta}</td>     
                                         <td>
-                                            <a href="#" class="editar_rol" data-id="${e.Id}" ><i  class="fas fa-edit"></i></a>
+                                            <a href="#" class="editar_rol" data-id="${e.rol_Id}" ><i  class="fas fa-edit"></i></a>
                                         </td>
                                         <td>
-                                            <a href="#" class="eliminar_rol" data-id="${e.Id}" ><i class="fas fa-trash"></i></a>
+                                            <a href="#" class="eliminar_rol" data-id="${e.rol_Id}" ><i class="fas fa-trash"></i></a>
                                     </td>  
                                     </tr>`; 
                  
              });
              $("#tablaroles tbody").html(template);
-             tablaroles.trigger("update");
         }, "JSON");
         
                                     

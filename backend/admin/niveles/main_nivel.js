@@ -1,5 +1,8 @@
 $(document).ready(function(){
     //inicializar el plugin de datatable
+    
+     Mostrar();
+    
     tablaniveles=$("#tablaniveles").DataTable({
        
         
@@ -95,10 +98,10 @@ $(document).ready(function(){
             "id" : $(this).data("id")
         }
         $.post("../../includes/funciones_roles_niveles.php", obj, function(data){            
-            $("#id").val(data.Id);
-            $("#nombre").val(data.Nombre);
-            $("#descripcion").val(data.Descripcion);            
-            $("#lista").val(data.Estatus);                    
+            $("#id").val(data.niv_Id);
+            $("#nombre").val(data.niv_Nombre);
+            $("#descripcion").val(data.niv_Descripcion);            
+            $("#lista").val(data.niv_Estatus);                    
         }, "JSON");
         
        
@@ -110,4 +113,57 @@ $(document).ready(function(){
 
         
     });
+    
+     $("#tablaniveles").on("change",".estatus_check", function(){
+    let obj = {
+        "accion" : "cambiar_statusNivel",
+        "id" :  $(this).data("id"),
+    };
+    if($(this).is(":checked")){
+        obj["status"] = 1;
+    }else{
+        obj["status"] = 0;
+    }
+    //console.log(obj);
+      
+      $.post("../../includes/funciones_roles_niveles.php",obj,"JSON");
+    });
+    
+    function Mostrar(){
+        
+        
+        let obj={
+            "accion" : "mostrar_niveles"
+            
+        }
+        let template = ``; 
+        
+         $.post("../../includes/funciones_roles_niveles.php", obj, function(data){       
+             $.each(data,function(i,e){
+                 console.log(i,e);
+                 let status = "";
+                 if(e.niv_Estatus ==  1){
+                        status  =  'checked="checked"';
+                    }
+                 template += `           <tr>
+                                        <td>${i+1}</td>
+                                        <td>${e.niv_Nombre}</td>
+                                        <td>${e.niv_Descripcion}</td>                                    
+                                        <td><input type="checkbox" ${status} class="estatus_check" data-id="${e.niv_Id}" value="${e.niv_Estatus}"></td>
+                                        <td>${e.niv_FechaAlta}</td>     
+                                        <td>
+                                            <a href="#" class="editar_nivel" data-id="${e.niv_Id}" ><i  class="fas fa-edit"></i></a>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="eliminar_nivel" data-id="${e.niv_Id}" ><i class="fas fa-trash"></i></a>
+                                    </td>  
+                                    </tr>`; 
+                 
+             });
+             $("#tablaniveles tbody").html(template);
+        }, "JSON");
+        
+                                    
+    }
+    
  });

@@ -14,6 +14,8 @@
             break;   
             case 'editar_rol':
                 editar_rol();
+            case 'cambiar_statusRol':
+                cambiar_statusRol();
             break;  
             case 'mostrar_roles':
                 mostrar_roles();
@@ -27,9 +29,15 @@
             case 'eliminar_nivel':
                 eliminar_nivel($_POST["id"]);
             break;   
+            case 'mostrar_niveles':
+                mostrar_niveles();
+            break;   
             case 'editar_nivel':
                 editar_nivel();
             break;
+            case 'cambiar_statusNivel':
+                cambiar_statusNivel();
+            break;  
         }
     }
 
@@ -38,10 +46,10 @@
         extract($_POST);
 
         $insertar=$db ->insert("Roles",[
-                                            "Nombre"=>$nom,
-                                            "Descripcion"=>$desc,
-                                            "Estatus"=>$est ,
-                                            "FechaAlta" => date("Y").date("m").date("d")
+                                            "rol_Nombre"=>$nom,
+                                            "rol_Descripcion"=>$desc,
+                                            "rol_Estatus"=>$est ,
+                                            "rol_FechaAlta" => date("Y").date("m").date("d")
                                             ]);
         if($insertar){
             echo "Registro existoso";
@@ -53,14 +61,14 @@
 
     function consultar_rol($id){
         global $db;
-         $consultar = $db -> get("Roles","*",["AND" => [ "Id"=>$id]]);
+         $consultar = $db -> get("Roles","*",["AND" => [ "rol_Id"=>$id]]);
         echo json_encode($consultar);
 
     }
 
     function eliminar_rol($id){
         global $db;
-        $eliminar = $db->delete("Roles",["Id" => $id]);
+        $eliminar = $db->delete("Roles",["rol_Id" => $id]);
         if($eliminar){
             echo "Registro eliminado";
         }else{
@@ -71,10 +79,22 @@
    function editar_rol(){
         global $db;
         extract($_POST);
-         $editar=$db ->update("Roles",["Nombre"=>$nom,
-                                        "Descripcion"=>$desc,
-                                        "Estatus"=>$est,
-                                        ],["Id"=>$id]);
+         $editar=$db ->update("Roles",["rol_Nombre"=>$nom,
+                                        "rol_Descripcion"=>$desc,
+                                        "rol_Estatus"=>$est,
+                                        ],["rol_Id"=>$id]);
+        if($editar){
+            echo "Edicion completada";
+        }else{
+            echo "Se ocasiono un error";
+        } 
+    }
+
+function cambiar_statusRol(){
+        global $db;
+        extract($_POST);
+         $editar=$db ->update("Roles",["rol_Estatus"=>$status,
+                                        ],["rol_Id"=>$id]);
         if($editar){
             echo "Edicion completada";
         }else{
@@ -85,23 +105,19 @@
 function mostrar_roles(){
 
                             global $db;
-                            $roles = $db->select("Roles","*",["Id[>]" => 3]);
-                            echo json_encode($roles);                                                                                                                                                              
-                                
+                            $roles = $db->select("Roles","*",["rol_Id[>]" => 3]);
+                            echo json_encode($roles);                                                                                                                                                                                      
 }
-                                
-                                
-
-
+                                                            
     function insertar_nivel(){
         global $db;
         extract($_POST);
 
         $insertar=$db ->insert("Niveles",[
-                                            "Nombre"=>$nom,
-                                            "Descripcion"=>$desc,
-                                            "Estatus"=>$est ,
-                                            "FechaAlta" => date("Y").date("m").date("d")
+                                            "niv_Nombre"=>$nom,
+                                            "niv_Descripcion"=>$desc,
+                                            "niv_Estatus"=>$est ,
+                                            "niv_FechaAlta" => date("Y").date("m").date("d")
                                             ]);
         if($insertar){
             echo "Registro existoso";
@@ -113,7 +129,7 @@ function mostrar_roles(){
     function consultar_nivel($id){
 
         global $db;
-         $consultar = $db -> get("Niveles","*", ["AND" =>[ "Id"=>$id]]);
+         $consultar = $db -> get("Niveles","*", ["AND" =>[ "niv_Id"=>$id]]);
         echo json_encode($consultar);
 
     }
@@ -121,7 +137,7 @@ function mostrar_roles(){
     function eliminar_nivel($id){
         global $db;
         
-        $eliminar = $db->delete("Niveles",["Id" => $id]);
+        $eliminar = $db->delete("Niveles",["niv_Id" => $id]);
         if($eliminar){
             echo "Registro eliminado";
         }else{
@@ -129,19 +145,40 @@ function mostrar_roles(){
         }
     }
 
+    function mostrar_niveles(){
+
+                            global $db;
+                            $niveles = $db->select("Niveles","*","");
+                            echo json_encode($niveles);                                                                                                                                                              
+                                
+    }
+
    function editar_nivel(){
         global $db;
         extract($_POST);
-         $editar=$db ->update("Niveles",["Nombre"=>$nom,
-                                        "Descripcion"=>$desc,
-                                        "Estatus"=>$est,
-                                        ],["Id"=>$id]);
+         $editar=$db ->update("Niveles",["niv_Nombre"=>$nom,
+                                        "niv_Descripcion"=>$desc,
+                                        "niv_Estatus"=>$est,
+                                        ],["niv_Id"=>$id]);
         if($editar){
             echo "Edicion completada";
         }else{
             echo "Se ocasiono un error";
         } 
     }
+
+function cambiar_statusNivel(){
+        global $db;
+        extract($_POST);
+         $editar=$db ->update("Niveles",["niv_Estatus"=>$status,
+                                        ],["niv_Id"=>$id]);
+        if($editar){
+            echo "Edicion completada";
+        }else{
+            echo "Se ocasiono un error";
+        } 
+    }
+
 
 ?>
 
